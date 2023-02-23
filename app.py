@@ -136,6 +136,8 @@ with torch.no_grad():
 class VideoCamera(object):
     def __init__(self):
         self.video = cv2.VideoCapture(0)
+        self.video.set(cv2.CAP_PROP_FRAME_WIDTH, 1920)
+        self.video.set(cv2.CAP_PROP_FRAME_HEIGHT, 1080)
 
     def __del__(self):
         self.video.release()
@@ -173,7 +175,7 @@ class VideoCamera(object):
                         label = f'{names[int(cls)]} {conf:.2f}'
                         plot_one_box(xyxy, image, label=label, color=colors[int(cls)], line_thickness=3)
 
-        ret, jpeg = cv2.imencode('.jpg', image)
+        ret, jpeg = cv2.imencode('.jpg', cv2.resize(image, (1920, 1080)))
         return jpeg.tobytes()
         
 
